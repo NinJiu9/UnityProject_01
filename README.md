@@ -3,7 +3,7 @@
 
 创建新的空文件夹，然后在右键Git Bash Here，输入：git clone git@github.com:NinJiu9/UnityProject_01.git 等待加载完成  
 输入下面代码，如果前面都没有问题，这个时候你应该可以看到自己进入了主分支 main   
-```cd UnityProject_01```  
+<`cd UnityProject_01`>
 输入下面代码，便创建好分支并进入新建分支了  
 ```git checkout -b "自定分支名字"```  
 可以对项目做出修改添加删除操作后  
