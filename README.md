@@ -46,14 +46,34 @@
 合并分支master到当前分支  
 `git merge master`
 
-### 本地仓库分支更新到远程仓库主分支
-先将本地修改commit，更新到远程分支仓库，然后先更换当前分支为主分支，在主分支合并自己的分支， 
+### 在**本地仓库用 Git**将本地仓库分支更新到远程仓库主分支  
 ```
+确保自己在自己的分支中运行以下代码
+git pull
 git add .  
 git commit -m"updata"
 git push  
 git checkout main  
 git merge 当前分支名字  
+```
+
+### 远程仓库主分支更新到本地仓库分支  
+```
+git checkout main  
+git pull  
+git checkout 当前分支名字  
+git merge main  
+```
+
+### **所有本地仓库更新推送到远程仓库之前都需要先保证更新前远程仓库与本地仓库一致，否则推送会失败**
+#### 如果commit本地仓库的修改后，想要直接push本地仓库到远程仓库，但是出现下面提示，则说明你的远程仓库有更新，本次push失败  
+![image](https://github.com/NinJiu9/UnityProject_01/assets/95898218/15c93b08-ea3c-48e6-be86-df882d776cab)
+
+可以使用下面指令获取远程仓库更新  
+```
+git pull --rebase
 ```  
-### 远程仓库主分支更新到本地仓库分支
-待写。。。。。
+该命令的意思是把远程库中的更新合并到（pull=fetch+merge）本地库中，–-rebase的作用是取消掉本地库中刚刚的commit，并把他们接到更新后的版本库之中，运行成功后会出现下面句子，之后便可以再次push你的本地仓库了  
+```
+Successfully rebased and updated refs/heads/junwei.
+```
