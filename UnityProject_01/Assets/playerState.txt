@@ -1,13 +1,14 @@
 {
-    "playerposition": {
+    "Playerposition": {
         "x": -6.22599983215332,
         "y": -2.059000015258789,
         "z": 0.0
     },
-    "playercolor": {
+    "Playercolor": {
         "r": 1.0,
         "g": 1.0,
         "b": 1.0,
         "a": 1.0
-    }
+    },
+    "PlayerBlood": 0.0
 }

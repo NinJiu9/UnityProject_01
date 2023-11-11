@@ -5,12 +5,15 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     public GameObject uiPanel;
-
+    private Animator anim;
     private bool _isUiPanelActive = false;
+
+    private string strAppear = "Appear";
     // Start is called before the first frame update
     void Start()
     {
-        
+        uiPanel.SetActive(true);
+        anim = uiPanel.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -20,9 +23,10 @@ public class UIController : MonoBehaviour
         KeyDownEsc();
     }
 
-    void SetSettingUiPanel(bool active)
+    void SetSettingUiPanel(bool isActive)
     {
-        uiPanel.SetActive(active);
+        // uiPanel.SetActive(active);
+        anim.SetBool(strAppear, isActive);
     }
 
     public void KeyDownEsc()
