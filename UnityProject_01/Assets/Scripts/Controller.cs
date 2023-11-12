@@ -8,17 +8,24 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     private float input_x;
-    private bool isGround = false;
+    private bool isGround;
     private Rigidbody2D rb;
     private BoxCollider2D cld;
-    public float speed = 8.0f;
-    public float jumpForce = 1000.0f;
     private Transform playerT;
     private SpriteRenderer playerSR;
+
     private float playerBlood;
-    public Slider BloodSlider;
+
     //扣血最小值
     private float MinRreduceBlood = -0.05f;
+    private bool isStairway;
+
+    public Animator VisalAnim;
+
+    public float HSpeed = 8.0f;
+    public float jumpForce = 600.0f;
+    public Slider BloodSlider;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,6 +40,7 @@ public class Controller : MonoBehaviour
         Jump();
         Raycast();
         Move();
+        MoveInStairway();
     }
 
     /*
@@ -65,8 +73,7 @@ public class Controller : MonoBehaviour
     void Move()
     {
         input_x = Input.GetAxisRaw("Horizontal");
-
-        rb.velocity = new Vector2(input_x * speed, rb.velocity.y);
+        rb.velocity = new Vector2(input_x * HSpeed, rb.velocity.y);
     }
 
     /*
@@ -109,34 +116,79 @@ public class Controller : MonoBehaviour
      */
     public void ReduceBlood()
     {
-        UpdateBlood(2*MinRreduceBlood);
+        UpdateBlood(2 * MinRreduceBlood);
     }
 
+    /*
+     * 爬楼梯
+     */
+    private void MoveInStairway()
+    {
+        if (isStairway && Input.GetKeyDown(KeyCode.W))
+        {
+            // 判断目前是不是idle状态
+            if(VisalAnim.GetCurrentAnimatorStateInfo(0).IsName("idle"))
+            {
+                print("idle");
+                VisalAnim.SetTrigger("StairwayAppear");
+            }
+            
+        }
+        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            isStairway = false;
+            if(VisalAnim.GetCurrentAnimatorStateInfo(0).IsName("up"))
+            {
+                print("up");
+                VisalAnim.SetTrigger("StairwayAppear");
+            }
+        }
+    }
+
+    /*
+     * 进入碰撞体
+     */
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Tip"))
+        if (other.CompareTag("Tip"))
         {
             Tip tip = other.GetComponent<Tip>();
             if (tip.TipAnimator != null)
             {
-                tip.TipAnimator.SetBool("TipAppear",true);
+                tip.TipAnimator.SetBool("TipAppear", true);
             }
         }
-        if(other.CompareTag("Stick"))
+
+        if (other.CompareTag("Stick"))
         {
             ReduceBlood();
         }
+
+        if (other.CompareTag("Stairway"))
+        {
+            isStairway = true;
+        }
     }
-    
+
+    /*
+     * 出碰撞体
+     */
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.CompareTag("Tip"))
+        if (other.CompareTag("Tip"))
         {
             Tip tip = other.GetComponent<Tip>();
             if (tip.TipAnimator != null)
             {
-                tip.TipAnimator.SetBool("TipAppear",false);
+                tip.TipAnimator.SetBool("TipAppear", false);
             }
+        }
+
+        if (other.CompareTag("Stairway"))
+        {
+            isStairway = false;
+            VisalAnim.SetTrigger("StairwayAppear");
         }
     }
 }

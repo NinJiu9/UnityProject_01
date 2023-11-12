@@ -6,13 +6,13 @@ public class CameraFollow : MonoBehaviour
 {
     public GameObject player;
 
-    [HideInInspector] public Vector3 offest;
+    [HideInInspector] public float offest;
 
     // private Vector3 offest;
     // Start is called before the first frame update
     void Start()
     {
-        offest = transform.position - player.transform.position;
+        offest = transform.position.z - player.transform.position.z;
     }
 
     // Update is called once per frame
@@ -23,6 +23,6 @@ public class CameraFollow : MonoBehaviour
 
     void Follow()
     {
-        transform.position = player.transform.position + offest;
+        transform.position = new Vector3(player.transform.position.x,transform.position.y,player.transform.position.z + offest);
     }
 }
